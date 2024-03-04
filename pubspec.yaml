@@ -37,6 +37,7 @@ flutter:
   assets:
     - assets/images/album-cover.jpg
     - assets/images/logo.jpg
+    - assets/audio/beatles.mp3
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
