@@ -2,7 +2,7 @@ import 'package:dom_tac_music_player/presentation/pages/tracks_list/widgets/like
 import 'package:dom_tac_music_player/presentation/pages/tracks_list/widgets/played_btn.dart';
 import 'package:flutter/material.dart';
 
-Widget trackNameWidget(int index) {
+Widget trackNameWidget(int index, String title) {
   return SizedBox(
     width: 300,
     height: 60,
@@ -10,9 +10,10 @@ Widget trackNameWidget(int index) {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
-          'Avril Lavigne - Under My Skin',
-          style: TextStyle(color: Colors.white),
+        Text(
+          title,
+          style: const TextStyle(
+              color: Colors.white, overflow: TextOverflow.ellipsis),
         ),
         Row(
           children: [
