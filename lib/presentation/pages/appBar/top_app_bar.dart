@@ -1,4 +1,5 @@
 import 'package:dom_tac_music_player/presentation/pages/appBar/widgets/app_bar_btns.dart';
+import 'package:dom_tac_music_player/presentation/pages/search/search_screen.dart';
 import 'package:flutter/material.dart';
 
 PreferredSize topAppBar(BuildContext context) {
@@ -10,6 +11,16 @@ PreferredSize topAppBar(BuildContext context) {
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         actions: <Widget>[
+          InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SearchScreen()));
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [appBarBtns(Icons.search)],
+            ),
+          ),
           Builder(builder: (context) {
             return InkWell(
               onTap: () {
@@ -20,7 +31,7 @@ PreferredSize topAppBar(BuildContext context) {
                 children: [appBarBtns(Icons.list)],
               ),
             );
-          })
+          }),
         ],
         leading: InkWell(
           onTap: () {

@@ -1,4 +1,6 @@
 import 'package:dom_tac_music_player/bloc/play_pause_bloc/play_pause_bloc.dart';
+import 'package:dom_tac_music_player/bloc/search_list_bloc/search_list_bloc.dart';
+import 'package:dom_tac_music_player/bloc/search_term_bloc/search_term_bloc.dart';
 import 'package:dom_tac_music_player/presentation/pages/tracks_list/tracks_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +11,14 @@ void main() async {
       providers: [
         BlocProvider(
           create: (context) => PlayPauseBloc(),
+        ),
+        BlocProvider(
+          create: (context) => SearchTermBloc(),
+        ),
+        BlocProvider(
+          create: (context) => SearchListBloc(
+              songsList: SongsList(),
+              searchTermBloc: BlocProvider.of<SearchTermBloc>(context)),
         ),
       ],
       child: MyApp(),

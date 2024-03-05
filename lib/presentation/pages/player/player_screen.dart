@@ -16,13 +16,15 @@ class PlayerScreen extends StatefulWidget {
   final String songName;
   final String albumName;
   final int id;
+  final List<String> list;
   PlayerScreen(
       {super.key,
       required this.path,
       required this.songName,
       required this.albumName,
       required this.audioPlayer,
-      required this.id});
+      required this.id,
+      required this.list});
 
   @override
   State<PlayerScreen> createState() => _PlayerScreenState();
