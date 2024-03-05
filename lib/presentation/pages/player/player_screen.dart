@@ -32,7 +32,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
   @override
   void initState() {
     super.initState();
-
+    context.read<PlayPauseBloc>().add(PlayEvent());
     play();
   }
 

@@ -8,3 +8,7 @@ sealed class PlayPauseEvent extends Equatable {
 }
 
 class PlayPause extends PlayPauseEvent {}
+
+class PlayEvent extends PlayPauseEvent {}
+
+class PauseEvent extends PlayPauseEvent {}
