@@ -47,7 +47,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: topAppBar(context),
+      appBar: topAppBar(context, widget.audioPlayer),
       backgroundColor: ColorsManager.primaryColor,
       body: SizedBox(
         width: width,

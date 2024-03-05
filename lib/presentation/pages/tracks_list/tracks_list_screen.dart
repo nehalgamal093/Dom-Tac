@@ -1,11 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:dom_tac_music_player/bloc/search_list_bloc/search_list_bloc.dart';
 import 'package:dom_tac_music_player/presentation/pages/appBar/top_app_bar.dart';
 import 'package:dom_tac_music_player/presentation/pages/drawer/drawer_widget.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/player_screen.dart';
 import 'package:dom_tac_music_player/presentation/pages/tracks_list/widgets/track_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import '../../resources/colors_manager.dart';
 
@@ -19,17 +17,12 @@ class TracksListScreen extends StatefulWidget {
 class _TracksListScreenState extends State<TracksListScreen> {
   AudioPlayer audioPlayer = AudioPlayer();
   final _audioQuery = OnAudioQuery();
-  @override
-  void initState() {
-    super.initState();
-    context.read<SearchListBloc>().add(GetListEvent());
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsManager.primaryColor,
-      appBar: topAppBar(context),
+      appBar: topAppBar(context, audioPlayer),
       endDrawer: drawerWidget(),
       body: FutureBuilder(
           future: _audioQuery.querySongs(
