@@ -2,12 +2,12 @@ part of 'search_term_bloc.dart';
 
 class SearchTermState extends Equatable {
   final String searchTerm;
-  SearchTermState({
+  const SearchTermState({
     required this.searchTerm,
   });
 
   factory SearchTermState.initial() {
-    return SearchTermState(searchTerm: '');
+    return const SearchTermState(searchTerm: '');
   }
 
   @override

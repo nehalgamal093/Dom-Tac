@@ -17,7 +17,7 @@ class PlayerScreen extends StatefulWidget {
   final String albumName;
   final int id;
   final List<String> list;
-  PlayerScreen(
+  const PlayerScreen(
       {super.key,
       required this.path,
       required this.songName,

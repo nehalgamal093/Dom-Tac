@@ -9,7 +9,7 @@ sealed class SearchTermEvent extends Equatable {
 
 class SetSearchTermEvent extends SearchTermEvent {
   final String newSearchTerm;
-  SetSearchTermEvent({
+  const SetSearchTermEvent({
     required this.newSearchTerm,
   });
 
