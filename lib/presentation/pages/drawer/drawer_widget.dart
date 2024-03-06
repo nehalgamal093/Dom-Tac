@@ -1,19 +1,26 @@
+import 'package:dom_tac_music_player/presentation/pages/playlists/playlist_screen.dart';
 import 'package:dom_tac_music_player/presentation/resources/colors_manager.dart';
 import 'package:flutter/material.dart';
 
-Widget drawerWidget() {
+Widget drawerWidget(BuildContext context) {
   return Drawer(
     backgroundColor: ColorsManager.primaryColor,
     child: ListView(
       children: [
         Image.asset('assets/images/logo.jpg'),
         const SizedBox(height: 10),
-        const ListTile(
-          title: Text(
+        ListTile(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PlaylistScreen()));
+          },
+          title: const Text(
             'Playlists',
             style: TextStyle(color: Colors.white),
           ),
-          leading: Icon(
+          leading: const Icon(
             Icons.playlist_add,
             color: Colors.white,
           ),

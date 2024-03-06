@@ -1,44 +1,48 @@
-import 'package:dom_tac_music_player/bloc/play_pause_bloc/play_pause_bloc.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/widgets/player_btn.dart';
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_audio/just_audio.dart';
 
-Widget controlsBtns(String path, AudioPlayer audioPlayer) {
-  play() async {
-    await audioPlayer.play(DeviceFileSource(path));
-  }
-
-  pause() async {
-    await audioPlayer.pause();
-  }
-
+AudioPlayer audioPlayer = AudioPlayer();
+Widget controlsBtns(
+  String path,
+  bool isPlaying,
+  AudioPlayer audioPlayer,
+) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        playerBtn(Icons.shuffle),
-        BlocBuilder<PlayPauseBloc, PlayPauseState>(
-          builder: (context, state) {
-            if (state.playOrPauseStatus == PlayOrPauseStatus.pause) {
-              return InkWell(
-                  onTap: () {
-                    play();
-                    context.read<PlayPauseBloc>().add(PlayPause());
-                  },
-                  child: clickedBtn(Icons.play_arrow));
-            } else {
-              return InkWell(
-                  onTap: () {
-                    context.read<PlayPauseBloc>().add(PlayPause());
-                    pause();
-                  },
-                  child: clickedBtn(Icons.pause));
-            }
+        InkWell(
+            onTap: () {
+              audioPlayer.setLoopMode(LoopMode.one);
+            },
+            child: playerBtn(Icons.repeat)),
+        InkWell(
+          onTap: () {
+            audioPlayer.seekToPrevious();
           },
+          child: nextAndPreviousBtn(
+            Icons.skip_previous_rounded,
+          ),
         ),
-        playerBtn(Icons.repeat)
+        isPlaying != true
+            ? InkWell(
+                onTap: audioPlayer.play, child: clickedBtn(Icons.play_arrow))
+            : InkWell(onTap: audioPlayer.pause, child: clickedBtn(Icons.pause)),
+        InkWell(
+          onTap: () {
+            audioPlayer.seekToNext();
+          },
+          child: nextAndPreviousBtn(
+            Icons.skip_next_rounded,
+          ),
+        ),
+        InkWell(
+            onTap: () {
+              audioPlayer.setShuffleModeEnabled(true);
+            },
+            child: playerBtn(Icons.shuffle))
       ],
     ),
   );

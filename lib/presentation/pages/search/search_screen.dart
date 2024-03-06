@@ -1,17 +1,16 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:dom_tac_music_player/bloc/search_list_bloc/search_list_bloc.dart';
 import 'package:dom_tac_music_player/presentation/pages/search/widgets/search_bar.dart';
 import 'package:dom_tac_music_player/presentation/resources/colors_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../player/player_screen.dart';
 import '../tracks_list/widgets/track_tile.dart';
 
 class SearchScreen extends StatefulWidget {
-  final AudioPlayer audioPlayer;
-  const SearchScreen({super.key, required this.audioPlayer});
+  const SearchScreen({super.key});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -42,19 +41,17 @@ class _SearchScreenState extends State<SearchScreen> {
                   itemBuilder: (context, index) {
                     return InkWell(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PlayerScreen(
-                                list: todos.map((e) => e.title).toList(),
-                                songName: todos[index].title,
-                                albumName: todos[index].genre ?? 'Music',
-                                audioPlayer: widget.audioPlayer,
-                                path: todos[index].data,
-                                id: todos[index].id,
-                              ),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => PlayerScreen(
+                          //       songName: todos[index].title,
+                          //       albumName: todos[index].genre ?? 'Music',
+                          //       path: todos[index].data,
+                          //       id: todos[index].id,
+                          //     ),
+                          //   ),
+                          // );
                         },
                         child: trackTile(
                           index,

@@ -1,10 +1,11 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:dom_tac_music_player/presentation/pages/appBar/top_app_bar.dart';
 import 'package:dom_tac_music_player/presentation/pages/drawer/drawer_widget.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/player_screen.dart';
 import 'package:dom_tac_music_player/presentation/pages/tracks_list/widgets/track_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:page_transition/page_transition.dart';
 import '../../resources/colors_manager.dart';
 
 class TracksListScreen extends StatefulWidget {
@@ -15,15 +16,14 @@ class TracksListScreen extends StatefulWidget {
 }
 
 class _TracksListScreenState extends State<TracksListScreen> {
-  AudioPlayer audioPlayer = AudioPlayer();
   final _audioQuery = OnAudioQuery();
-
+  final player = AudioPlayer();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsManager.primaryColor,
-      appBar: topAppBar(context, audioPlayer),
-      endDrawer: drawerWidget(),
+      appBar: topAppBar(context),
+      endDrawer: drawerWidget(context),
       body: FutureBuilder(
           future: _audioQuery.querySongs(
               sortType: null,
@@ -38,20 +38,23 @@ class _TracksListScreenState extends State<TracksListScreen> {
                     return InkWell(
                         onTap: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PlayerScreen(
-                                list:
-                                    snapshot.data!.map((e) => e.title).toList(),
-                                songName: snapshot.data![index].title,
-                                albumName:
-                                    snapshot.data![index].genre ?? 'Music',
-                                audioPlayer: audioPlayer,
-                                path: snapshot.data![index].data,
-                                id: snapshot.data![index].id,
-                              ),
-                            ),
-                          );
+                              context,
+                              PageTransition(
+                                  duration: const Duration(milliseconds: 500),
+                                  reverseDuration:
+                                      const Duration(milliseconds: 500),
+                                  type: PageTransitionType.leftToRight,
+                                  child: PlayerScreen(
+                                      currentIndex: index,
+                                      songs: snapshot.data!
+                                          .map((e) => e.data)
+                                          .toList(),
+                                      player: player,
+                                      songName: snapshot.data![index].title,
+                                      albumName: snapshot.data![index].genre ??
+                                          'Music',
+                                      path: snapshot.data![index].data,
+                                      songModel: snapshot.data!)));
                         },
                         child: trackTile(
                           index,

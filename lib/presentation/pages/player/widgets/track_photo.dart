@@ -1,10 +1,9 @@
 import 'dart:typed_data';
-
 import 'package:dom_tac_music_player/presentation/resources/assets_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-Widget trackPhoto(BuildContext context, int id) {
+Widget trackPhoto(BuildContext context, List<SongModel> songs, int index) {
   OnAudioQuery audioQuery = OnAudioQuery();
   return Container(
     decoration: BoxDecoration(
@@ -30,8 +29,10 @@ Widget trackPhoto(BuildContext context, int id) {
               color: Colors.black,
             ),
             child: FutureBuilder<Uint8List?>(
-                future: audioQuery.queryArtwork(id, ArtworkType.AUDIO),
+                future:
+                    audioQuery.queryArtwork(songs[index].id, ArtworkType.AUDIO),
                 builder: (context, snapshot) {
+                  print('-3-3-3-3-${index}');
                   if (snapshot.hasData) {
                     return Image.memory(
                       snapshot.data!,
