@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../player/player_screen.dart';
 import '../tracks_list/widgets/track_tile.dart';
@@ -45,24 +46,24 @@ class _SearchScreenState extends State<SearchScreen> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => PlayerScreen(
-                                songs: todos.map((e) => e.data).toList(),
-                                songModel: todos,
-                                currentIndex: index,
-                                songName: todos[index].title,
-                                albumName: todos[index].genre ?? 'Music',
-                                path: todos[index].data,
-                                player: widget.player,
-                              ),
+                            PageTransition(
+                              duration: const Duration(milliseconds: 500),
+                              reverseDuration:
+                                  const Duration(milliseconds: 500),
+                              type: PageTransitionType.leftToRight,
+                              child: PlayerScreen(
+                                  songs: todos.map((e) => e.data).toList(),
+                                  songModel: todos,
+                                  currentIndex: index,
+                                  songName: todos[index].title,
+                                  albumName: todos[index].genre ?? 'Music',
+                                  path: todos[index].data,
+                                  player: widget.player),
                             ),
                           );
                         },
-                        child: trackTile(
-                          index,
-                          todos[index].title.toString(),
-                          todos[index].id,
-                        ));
+                        child: trackTile(index, todos[index].title.toString(),
+                            todos[index].id, context));
                   });
             } else {
               return const CircularProgressIndicator();

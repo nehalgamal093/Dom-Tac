@@ -5,7 +5,7 @@ import 'package:dom_tac_music_player/presentation/resources/assets_manager.dart'
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-Widget trackTile(int index, String title, int id) {
+Widget trackTile(int index, String title, int id, BuildContext context) {
   OnAudioQuery audioQuery = OnAudioQuery();
   return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -46,7 +46,7 @@ Widget trackTile(int index, String title, int id) {
                     }
                   }),
               const SizedBox(width: 10),
-              trackNameWidget(index, title)
+              trackNameWidget(index, title, context)
             ],
           ),
         ),

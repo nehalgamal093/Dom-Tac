@@ -70,46 +70,48 @@ class _PlayerScreenState extends State<PlayerScreen> {
   Widget mainPage() {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return SizedBox(
-      width: width,
-      height: height,
-      child: StreamBuilder<PlayerState>(
-          stream: widget.player.playerStateStream,
-          builder: (context, snapshot) {
-            final playing = snapshot.data?.playing;
+    return SingleChildScrollView(
+      child: SizedBox(
+        width: width,
+        height: height * .80,
+        child: StreamBuilder<PlayerState>(
+            stream: widget.player.playerStateStream,
+            builder: (context, snapshot) {
+              final playing = snapshot.data?.playing;
 
-            if (snapshot.hasData) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  trackPhoto(
-                      context, widget.songModel, widget.player.currentIndex!),
-                  const SizedBox(height: 40),
-                  addLoveBar(),
-                  const SizedBox(height: 20),
-                  StreamBuilder<Duration>(
-                      stream: widget.player.positionStream,
-                      builder: (context, snapshot) {
-                        return controlsBar(
-                            snapshot.data ?? Duration.zero,
-                            widget.player.bufferedPosition,
-                            widget.player.duration ?? Duration.zero,
-                            widget.player);
-                      }),
-                  const SizedBox(height: 30),
-                  trackName(
-                    widget.songModel[widget.player.currentIndex!].title,
-                    widget.songModel[widget.player.currentIndex!].artist!,
-                  ),
-                  const SizedBox(height: 50),
-                  controlsBtns(widget.path, playing!, widget.player)
-                ],
-              );
-            } else {
-              return Container();
-            }
-          }),
+              if (snapshot.hasData) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    trackPhoto(
+                        context, widget.songModel, widget.player.currentIndex!),
+                    const SizedBox(height: 40),
+                    addLoveBar(),
+                    const SizedBox(height: 20),
+                    StreamBuilder<Duration>(
+                        stream: widget.player.positionStream,
+                        builder: (context, snapshot) {
+                          return controlsBar(
+                              snapshot.data ?? Duration.zero,
+                              widget.player.bufferedPosition,
+                              widget.player.duration ?? Duration.zero,
+                              widget.player);
+                        }),
+                    const SizedBox(height: 30),
+                    trackName(
+                      widget.songModel[widget.player.currentIndex!].title,
+                      widget.songModel[widget.player.currentIndex!].artist!,
+                    ),
+                    const SizedBox(height: 50),
+                    controlsBtns(widget.path, playing!, widget.player)
+                  ],
+                );
+              } else {
+                return Container();
+              }
+            }),
+      ),
     );
   }
 }

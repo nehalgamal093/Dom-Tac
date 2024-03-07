@@ -37,6 +37,7 @@ class _TracksListScreenState extends State<TracksListScreen> {
                   itemBuilder: (context, index) {
                     return InkWell(
                         onTap: () {
+                          print('song id${snapshot.data![index].id}');
                           Navigator.push(
                             context,
                             PageTransition(
@@ -59,10 +60,10 @@ class _TracksListScreenState extends State<TracksListScreen> {
                           );
                         },
                         child: trackTile(
-                          index,
-                          snapshot.data![index].title.toString(),
-                          snapshot.data![index].id,
-                        ));
+                            index,
+                            snapshot.data![index].title.toString(),
+                            snapshot.data![index].id,
+                            context));
                   });
             } else {
               return const CircularProgressIndicator();

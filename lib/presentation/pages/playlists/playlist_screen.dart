@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:dom_tac_music_player/presentation/pages/playlist_tracks/playlist_tracks_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -15,15 +17,13 @@ class PlaylistScreen extends StatefulWidget {
 }
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
-  AudioPlayer audioPlayer = AudioPlayer();
-
   final _audioQuery = OnAudioQuery();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsManager.primaryColor,
       appBar: topAppBar(context, widget.player, true),
-      endDrawer: drawerWidget(context, audioPlayer),
+      endDrawer: drawerWidget(context, widget.player),
       body: FutureBuilder(
           future: _audioQuery.queryPlaylists(
               sortType: null,
@@ -32,44 +32,35 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               ignoreCase: true),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              String subString = 'App Playlist';
+              List<PlaylistModel> listOfPlayLists = snapshot.data!
+                  .where((e) => e.playlist.contains(subString))
+                  .toList();
               return ListView.builder(
-                  itemCount: snapshot.data!.length,
+                  itemCount: listOfPlayLists.length,
                   itemBuilder: (context, index) {
-                    if (snapshot.data![index].data!.endsWith('m3u')) {
-                      return InkWell(
-                          onTap: () async {
-                            // final tracks =
-                            // M3uParser.parse(snapshot.data![index].data!);
+                    return InkWell(
+                        onTap: () async {
+                          final file = File(listOfPlayLists[index].data!);
+                          final lines = await file.readAsLines();
+                          String name = 'Nehal';
 
-                            // final fileContent =
-                            //     await File(snapshot.data![index].data!)
-                            //         .readAsString();
-                            // final list = await File(snapshot.data![index].data!)
-                            //     .readAsLinesSync();
-                            // final listOfTracks = await parseFile(fileContent);
-
-                            // audioPlayer.play(DeviceFileSource(fileContent[1]));
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => PlaylistTracksList(
-                            //               data: fileContent,
-                            //             )));
-                            // Organized categories
-                            // final categories = sortedCategories(
-                            //     entries: listOfTracks,
-                            //     attributeName: 'group-title');
-                            // print(categories);
-                            print(snapshot.data);
-                          },
-                          child: trackTile(
+                          // ignore: use_build_context_synchronously
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PlaylistTracksList(
+                                        player: widget.player,
+                                        data: lines,
+                                      )));
+                        },
+                        child: trackTile(
                             index,
-                            snapshot.data![index].playlist,
-                            snapshot.data![index].id,
-                          ));
-                    } else {
-                      return Container();
-                    }
+                            listOfPlayLists[index].playlist.substring(
+                                  15,
+                                ),
+                            listOfPlayLists[index].id,
+                            context));
                   });
             } else {
               return const CircularProgressIndicator();

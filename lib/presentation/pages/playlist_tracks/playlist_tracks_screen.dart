@@ -4,21 +4,19 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../resources/colors_manager.dart';
 import '../appBar/top_app_bar.dart';
 import '../drawer/drawer_widget.dart';
+import '../player/player_screen.dart';
 import '../tracks_list/widgets/track_tile.dart';
 
 class PlaylistTracksList extends StatefulWidget {
   final List<String> data;
-  const PlaylistTracksList({super.key, required this.data});
+  final AudioPlayer player;
+  const PlaylistTracksList(
+      {super.key, required this.data, required this.player});
 
   @override
   State<PlaylistTracksList> createState() => _PlaylistTracksListState();
 }
 
-// _audioQuery.querySongs(
-//                 sortType: null,
-//                 orderType: OrderType.ASC_OR_SMALLER,
-//                 uriType: UriType.EXTERNAL,
-//                 ignoreCase: true),
 class _PlaylistTracksListState extends State<PlaylistTracksList> {
   AudioPlayer audioPlayer = AudioPlayer();
   final _audioQuery = OnAudioQuery();
@@ -36,30 +34,39 @@ class _PlaylistTracksListState extends State<PlaylistTracksList> {
                 ignoreCase: true),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                List<SongModel> u = [];
+
+                List<String> songs = widget.data.map((e) => e).toList();
+                for (var img in snapshot.data!) {
+                  for (var frnd in songs) {
+                    if (img.data.contains(frnd)) {
+                      u.add(img);
+                    }
+                  }
+                }
+
                 return ListView.builder(
-                    itemCount: snapshot.data!.length,
+                    itemCount: u.length,
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
                             print(snapshot.data![index].id);
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => PlayerScreen(
-                            //       songName: snapshot.data![index].title,
-                            //       albumName:
-                            //           snapshot.data![index].genre ?? 'Music',
-                            //       path: snapshot.data![index].data,
-                            //       id: snapshot.data![index].id,
-                            //     ),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PlayerScreen(
+                                    currentIndex: index,
+                                    songs: u.map((e) => e.data).toList(),
+                                    player: widget.player,
+                                    songName: u[index].title,
+                                    albumName: u[index].genre ?? 'Music',
+                                    path: u[index].data,
+                                    songModel: u),
+                              ),
+                            );
                           },
                           child: trackTile(
-                            index,
-                            snapshot.data![index].title.toString(),
-                            snapshot.data![index].id,
-                          ));
+                              index, u[index].title, u[index].id, context));
                     });
               } else {
                 return const CircularProgressIndicator();

@@ -1,48 +1,38 @@
 import 'package:flutter/material.dart';
 
-Widget likeTrackBtn(IconData icon, bool isLiked) {
+Widget addToPlaylistBtn(IconData icon) {
   return Container(
-    decoration: BoxDecoration(
+    decoration: const BoxDecoration(
       shape: BoxShape.circle,
       gradient: LinearGradient(
         begin: Alignment.topRight,
         end: Alignment.bottomCenter,
-        colors: isLiked
-            ? [
-                const Color.fromARGB(255, 241, 53, 53),
-                const Color.fromARGB(255, 144, 3, 3),
-              ]
-            : [
-                const Color.fromARGB(255, 2, 22, 55),
-                const Color.fromARGB(255, 1, 5, 12),
-              ],
+        colors: [
+          Color.fromARGB(255, 2, 22, 55),
+          Color.fromARGB(255, 1, 5, 12),
+        ],
       ),
     ),
     child: Padding(
       padding: const EdgeInsets.all(5.0),
       child: Container(
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
+        width: 20,
+        height: 20,
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: isLiked
-                ? [
-                    const Color.fromARGB(255, 144, 3, 3),
-                    const Color.fromARGB(255, 241, 53, 53),
-                  ]
-                : [
-                    const Color.fromARGB(255, 1, 5, 12),
-                    const Color.fromARGB(255, 2, 22, 55),
-                  ],
+            colors: [
+              Color.fromARGB(255, 1, 5, 12),
+              Color.fromARGB(255, 2, 22, 55),
+            ],
           ),
         ),
         child: Icon(
           icon,
           color: Colors.white,
-          size: 20,
+          size: 10,
         ),
       ),
     ),

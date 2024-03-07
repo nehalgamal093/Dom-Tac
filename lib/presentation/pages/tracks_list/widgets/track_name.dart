@@ -1,8 +1,9 @@
+import 'package:dom_tac_music_player/presentation/pages/add_to_playlist/add_to_playlist_screen.dart';
 import 'package:dom_tac_music_player/presentation/pages/tracks_list/widgets/liked_btn.dart';
 import 'package:dom_tac_music_player/presentation/pages/tracks_list/widgets/played_btn.dart';
 import 'package:flutter/material.dart';
 
-Widget trackNameWidget(int index, String title) {
+Widget trackNameWidget(int index, String title, BuildContext context) {
   return SizedBox(
     width: 300,
     height: 60,
@@ -20,9 +21,14 @@ Widget trackNameWidget(int index, String title) {
             const Text('Let Go', style: TextStyle(color: Colors.white)),
             const Spacer(),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              index == 0
-                  ? likeTrackBtn(Icons.favorite, true)
-                  : likeTrackBtn(Icons.favorite, false),
+              InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddToPlaylistScreen()));
+                  },
+                  child: addToPlaylistBtn(Icons.add)),
               const SizedBox(
                 width: 10,
               ),
