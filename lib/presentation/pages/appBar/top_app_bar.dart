@@ -3,7 +3,7 @@ import 'package:dom_tac_music_player/presentation/pages/search/search_screen.dar
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
-PreferredSize topAppBar(BuildContext context) {
+PreferredSize topAppBar(BuildContext context, AudioPlayer player, bool isBack) {
   return PreferredSize(
     preferredSize: const Size.fromHeight(80.0),
     child: Padding(
@@ -14,8 +14,10 @@ PreferredSize topAppBar(BuildContext context) {
         actions: <Widget>[
           InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SearchScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SearchScreen(player: player)));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -34,12 +36,14 @@ PreferredSize topAppBar(BuildContext context) {
             );
           }),
         ],
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: appBarBtns(Icons.arrow_back),
-        ),
+        leading: isBack
+            ? InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: appBarBtns(Icons.arrow_back),
+              )
+            : Container(),
       ),
     ),
   );

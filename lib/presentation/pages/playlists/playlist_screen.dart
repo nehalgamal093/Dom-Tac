@@ -1,16 +1,14 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:m3u_nullsafe/m3u_nullsafe.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-
 import '../../resources/colors_manager.dart';
 import '../appBar/top_app_bar.dart';
 import '../drawer/drawer_widget.dart';
 import '../tracks_list/widgets/track_tile.dart';
 
 class PlaylistScreen extends StatefulWidget {
-  const PlaylistScreen({super.key});
+  final AudioPlayer player;
+  const PlaylistScreen({super.key, required this.player});
 
   @override
   State<PlaylistScreen> createState() => _PlaylistScreenState();
@@ -24,8 +22,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsManager.primaryColor,
-      appBar: topAppBar(context),
-      endDrawer: drawerWidget(context),
+      appBar: topAppBar(context, widget.player, true),
+      endDrawer: drawerWidget(context, audioPlayer),
       body: FutureBuilder(
           future: _audioQuery.queryPlaylists(
               sortType: null,
@@ -43,12 +41,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                             // final tracks =
                             // M3uParser.parse(snapshot.data![index].data!);
 
-                            final fileContent =
-                                await File(snapshot.data![index].data!)
-                                    .readAsString();
-                            final list = await File(snapshot.data![index].data!)
-                                .readAsLinesSync();
-                            final listOfTracks = await parseFile(fileContent);
+                            // final fileContent =
+                            //     await File(snapshot.data![index].data!)
+                            //         .readAsString();
+                            // final list = await File(snapshot.data![index].data!)
+                            //     .readAsLinesSync();
+                            // final listOfTracks = await parseFile(fileContent);
 
                             // audioPlayer.play(DeviceFileSource(fileContent[1]));
                             // Navigator.push(

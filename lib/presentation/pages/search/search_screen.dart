@@ -3,6 +3,7 @@ import 'package:dom_tac_music_player/presentation/pages/search/widgets/search_ba
 import 'package:dom_tac_music_player/presentation/resources/colors_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_audio/just_audio.dart';
 
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -10,7 +11,8 @@ import '../player/player_screen.dart';
 import '../tracks_list/widgets/track_tile.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  final AudioPlayer player;
+  const SearchScreen({super.key, required this.player});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -41,17 +43,20 @@ class _SearchScreenState extends State<SearchScreen> {
                   itemBuilder: (context, index) {
                     return InkWell(
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => PlayerScreen(
-                          //       songName: todos[index].title,
-                          //       albumName: todos[index].genre ?? 'Music',
-                          //       path: todos[index].data,
-                          //       id: todos[index].id,
-                          //     ),
-                          //   ),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PlayerScreen(
+                                songs: todos.map((e) => e.data).toList(),
+                                songModel: todos,
+                                currentIndex: index,
+                                songName: todos[index].title,
+                                albumName: todos[index].genre ?? 'Music',
+                                path: todos[index].data,
+                                player: widget.player,
+                              ),
+                            ),
+                          );
                         },
                         child: trackTile(
                           index,

@@ -22,8 +22,8 @@ class _TracksListScreenState extends State<TracksListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsManager.primaryColor,
-      appBar: topAppBar(context),
-      endDrawer: drawerWidget(context),
+      appBar: topAppBar(context, player, false),
+      endDrawer: drawerWidget(context, player),
       body: FutureBuilder(
           future: _audioQuery.querySongs(
               sortType: null,
@@ -38,23 +38,25 @@ class _TracksListScreenState extends State<TracksListScreen> {
                     return InkWell(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              PageTransition(
-                                  duration: const Duration(milliseconds: 500),
-                                  reverseDuration:
-                                      const Duration(milliseconds: 500),
-                                  type: PageTransitionType.leftToRight,
-                                  child: PlayerScreen(
-                                      currentIndex: index,
-                                      songs: snapshot.data!
-                                          .map((e) => e.data)
-                                          .toList(),
-                                      player: player,
-                                      songName: snapshot.data![index].title,
-                                      albumName: snapshot.data![index].genre ??
-                                          'Music',
-                                      path: snapshot.data![index].data,
-                                      songModel: snapshot.data!)));
+                            context,
+                            PageTransition(
+                              duration: const Duration(milliseconds: 500),
+                              reverseDuration:
+                                  const Duration(milliseconds: 500),
+                              type: PageTransitionType.leftToRight,
+                              child: PlayerScreen(
+                                  currentIndex: index,
+                                  songs: snapshot.data!
+                                      .map((e) => e.data)
+                                      .toList(),
+                                  player: player,
+                                  songName: snapshot.data![index].title,
+                                  albumName:
+                                      snapshot.data![index].genre ?? 'Music',
+                                  path: snapshot.data![index].data,
+                                  songModel: snapshot.data!),
+                            ),
+                          );
                         },
                         child: trackTile(
                           index,

@@ -1,8 +1,9 @@
 import 'package:dom_tac_music_player/presentation/pages/playlists/playlist_screen.dart';
 import 'package:dom_tac_music_player/presentation/resources/colors_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 
-Widget drawerWidget(BuildContext context) {
+Widget drawerWidget(BuildContext context,AudioPlayer audio) {
   return Drawer(
     backgroundColor: ColorsManager.primaryColor,
     child: ListView(
@@ -14,7 +15,7 @@ Widget drawerWidget(BuildContext context) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const PlaylistScreen()));
+                    builder: (context) =>  PlaylistScreen(player:audio)));
           },
           title: const Text(
             'Playlists',

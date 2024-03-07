@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-
 import '../../resources/colors_manager.dart';
 import '../appBar/top_app_bar.dart';
 import '../drawer/drawer_widget.dart';
-import '../player/player_screen.dart';
 import '../tracks_list/widgets/track_tile.dart';
 
 class PlaylistTracksList extends StatefulWidget {
@@ -28,8 +26,8 @@ class _PlaylistTracksListState extends State<PlaylistTracksList> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: ColorsManager.primaryColor,
-        appBar: topAppBar(context),
-        endDrawer: drawerWidget(context),
+        appBar: topAppBar(context, audioPlayer, false),
+        endDrawer: drawerWidget(context, audioPlayer),
         body: FutureBuilder(
             future: _audioQuery.querySongs(
                 sortType: null,

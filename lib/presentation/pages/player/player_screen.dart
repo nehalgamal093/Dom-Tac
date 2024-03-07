@@ -62,7 +62,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: topAppBar(context),
+        appBar: topAppBar(context, widget.player, true),
         backgroundColor: ColorsManager.primaryColor,
         body: mainPage());
   }
