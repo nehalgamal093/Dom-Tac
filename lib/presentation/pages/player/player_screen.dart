@@ -6,7 +6,9 @@ import 'package:dom_tac_music_player/presentation/pages/player/widgets/track_pho
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../resources/colors_manager.dart';
+import '../../shared prefs/shared_prefs.dart';
 import '../appBar/top_app_bar.dart';
 
 class PlayerScreen extends StatefulWidget {
@@ -41,6 +43,11 @@ class _PlayerScreenState extends State<PlayerScreen> {
         initialPosition: Duration.zero);
 
     widget.player.play();
+  }
+
+  Future<void> saveLastSong(int lastPlayedAudioIndex) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setInt('last-index', lastPlayedAudioIndex);
   }
 
   void playNextAudio() async {
@@ -80,6 +87,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
               final playing = snapshot.data?.playing;
 
               if (snapshot.hasData) {
+                saveLastSong(widget.player.currentIndex!);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,

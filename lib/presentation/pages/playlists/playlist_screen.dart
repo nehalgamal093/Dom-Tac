@@ -57,7 +57,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         child: trackTile(
                             index,
                             listOfPlayLists[index].playlist.substring(
-                                  15,
+                                  12,
                                 ),
                             listOfPlayLists[index].id,
                             context));
