@@ -4,6 +4,7 @@ import 'package:dom_tac_music_player/presentation/pages/appBar/widgets/app_bar_b
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../bloc/is_home_bloc/is_home_bloc.dart';
 import '../../../../bloc/search_term_bloc/search_term_bloc.dart';
 
 final debounce = Debounce(milliseconds: 1000);
@@ -18,7 +19,7 @@ PreferredSize searchBar(
         automaticallyImplyLeading: false,
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context);
+            context.read<IsHomeBloc>().add(setCurrentWidgetEvent(isHome: true));
           },
           child: appBarBtns(Icons.arrow_back),
         ),

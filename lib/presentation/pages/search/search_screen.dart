@@ -10,54 +10,25 @@ import 'package:page_transition/page_transition.dart';
 import '../player/player_screen.dart';
 import '../tracks_list/widgets/track_tile.dart';
 
-class SearchScreen extends StatefulWidget {
-  final AudioPlayer player;
-  const SearchScreen({super.key, required this.player});
+// class SearchScreen extends StatefulWidget {
+//   final AudioPlayer player;
+//   const SearchScreen({super.key, required this.player});
 
-  @override
-  State<SearchScreen> createState() => _SearchScreenState();
-}
+//   @override
+//   State<SearchScreen> createState() => _SearchScreenState();
+// }
 
-class _SearchScreenState extends State<SearchScreen> {
-  final TextEditingController songController = TextEditingController();
-  final _audioQuery = OnAudioQuery();
+// class _SearchScreenState extends State<SearchScreen> {
 
-  @override
-  Widget build(BuildContext context) {
-    final todos = context.watch<SearchListBloc>().state.songList;
 
-    return Scaffold(
-      backgroundColor: ColorsManager.primaryColor,
-      appBar: searchBar(context, songController),
-      body: ListView.builder(
-          itemCount: todos.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    PageTransition(
-                      duration: const Duration(milliseconds: 500),
-                      reverseDuration: const Duration(milliseconds: 500),
-                      type: PageTransitionType.leftToRight,
-                      child: PlayerScreen(
-                          songs: todos.map((e) => e.data).toList(),
-                          songModel: todos,
-                          currentIndex: index,
-                          songName: todos[index].title,
-                          albumName: todos[index].genre ?? 'Music',
-                          path: todos[index].data,
-                          player: widget.player),
-                    ),
-                  );
-                },
-                child: trackTile(index, todos[index].title.toString(),
-                    todos[index].id, context));
-          }),
-      bottomSheet: todos.length == 0
-          ? Container(height: 0)
-          : smallPlayer(context, widget.player, todos, 2, _audioQuery),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+   
+
+//     return Scaffold(
+//       backgroundColor: ColorsManager.primaryColor,
+  
+//       body: 
+//     );
+//   }
+// }

@@ -1,14 +1,15 @@
+import 'package:dom_tac_music_player/bloc/song_details_bloc/song_details_bloc.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/widgets/add_love_bar.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/widgets/controls_bar.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/widgets/controls_btns.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/widgets/track_name.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/widgets/track_photo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../resources/colors_manager.dart';
-import '../../shared prefs/shared_prefs.dart';
 import '../appBar/top_app_bar.dart';
 
 class PlayerScreen extends StatefulWidget {
@@ -17,7 +18,6 @@ class PlayerScreen extends StatefulWidget {
   int currentIndex;
   final String songName;
   final String albumName;
-
   final AudioPlayer player;
   final List<String> songs;
   PlayerScreen(
@@ -50,14 +50,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
     await sharedPreferences.setInt('last-index', lastPlayedAudioIndex);
   }
 
-  void playNextAudio() async {
-    if (widget.currentIndex + 1 < widget.songs.length) {
-      widget.currentIndex++;
-      await widget.player.seek(Duration.zero, index: widget.currentIndex);
-    } else {
-      print("Reached the end of the playlist");
-    }
-  }
+  // void playNextAudio() async {
+  //   if (widget.currentIndex + 1 < widget.songs.length) {
+  //     widget.currentIndex++;
+  //     await widget.player.seek(Duration.zero, index: widget.currentIndex);
+  //   } else {
+  //     print("Reached the end of the playlist");
+  //   }
+  // }
 
   @override
   void initState() {
@@ -88,6 +88,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
               if (snapshot.hasData) {
                 saveLastSong(widget.player.currentIndex!);
+                context.read<SongDetailsBloc>().add(SongEvent(
+                    title: widget.songModel[widget.player.currentIndex!].title,
+                    artist:
+                        widget.songModel[widget.player.currentIndex!].artist!,
+                    id: widget.songModel[widget.player.currentIndex!].id,
+                    index: widget.player.currentIndex!));
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,

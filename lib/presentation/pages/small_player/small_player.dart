@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import '../../../bloc/song_details_bloc/song_details_bloc.dart';
 import '../../resources/assets_manager.dart';
 
 Widget smallPlayer(BuildContext context, AudioPlayer player,
@@ -12,6 +14,17 @@ Widget smallPlayer(BuildContext context, AudioPlayer player,
       builder: (context, snapshot) {
         final playing = snapshot.data?.playing;
         if (snapshot.hasData) {
+          player.currentIndex == null
+              ? context.read<SongDetailsBloc>().add(SongEvent(
+                  title: model[index].title,
+                  artist: model[index].artist!,
+                  id: model[index].id,
+                  index: index))
+              : context.read<SongDetailsBloc>().add(SongEvent(
+                  title: model[player.currentIndex!].title,
+                  artist: model[player.currentIndex!].artist!,
+                  id: model[player.currentIndex!].id,
+                  index: player.currentIndex!));
           return Container(
             height: height * .1,
             decoration: const BoxDecoration(
@@ -30,10 +43,9 @@ Widget smallPlayer(BuildContext context, AudioPlayer player,
                     const SizedBox(width: 10),
                     FutureBuilder<Uint8List?>(
                         future: onAudioQuery.queryArtwork(
-                            model[player.currentIndex == null
-                                    ? index
-                                    : player.currentIndex!]
-                                .id,
+                            player.currentIndex == null
+                                ? model[index].id
+                                : context.watch<SongDetailsBloc>().state.id,
                             ArtworkType.AUDIO),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
@@ -56,19 +68,17 @@ Widget smallPlayer(BuildContext context, AudioPlayer player,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            model[player.currentIndex == null
-                                    ? index
-                                    : player.currentIndex!]
-                                .title,
+                            player.currentIndex == null
+                                ? model[index].title
+                                : context.watch<SongDetailsBloc>().state.title,
                             style: const TextStyle(
                                 color: Colors.white,
                                 overflow: TextOverflow.ellipsis),
                           ),
                           Text(
-                            model[player.currentIndex == null
-                                    ? index
-                                    : player.currentIndex!]
-                                .artist!,
+                            player.currentIndex == null
+                                ? model[index].artist!
+                                : context.watch<SongDetailsBloc>().state.artist,
                             style: const TextStyle(color: Colors.white),
                           ),
                         ],
@@ -76,7 +86,9 @@ Widget smallPlayer(BuildContext context, AudioPlayer player,
                     ),
                     const SizedBox(width: 40),
                     InkWell(
-                      onTap: () async {},
+                      onTap: () {
+                        player.seekToPrevious();
+                      },
                       child: const Icon(
                         Icons.skip_previous_outlined,
                         size: 40,
@@ -101,7 +113,9 @@ Widget smallPlayer(BuildContext context, AudioPlayer player,
                             ),
                           ),
                     InkWell(
-                      onTap: () async {},
+                      onTap: () async {
+                        player.seekToNext();
+                      },
                       child: const Icon(
                         Icons.skip_next_outlined,
                         color: Colors.white,

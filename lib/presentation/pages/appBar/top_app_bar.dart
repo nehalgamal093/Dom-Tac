@@ -14,10 +14,10 @@ PreferredSize topAppBar(BuildContext context, AudioPlayer player, bool isBack) {
         actions: <Widget>[
           InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SearchScreen(player: player)));
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => SearchScreen(player: player)));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,

@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../../bloc/get_track_list_bloc/get_track_list_bloc.dart';
+import '../../../bloc/song_details_bloc/song_details_bloc.dart';
 import '../../../services/get_track_list.dart';
 import '../player/player_screen.dart';
 
