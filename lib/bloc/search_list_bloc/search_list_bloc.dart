@@ -6,6 +6,8 @@ import 'package:dom_tac_music_player/bloc/search_term_bloc/search_term_bloc.dart
 import 'package:equatable/equatable.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../../services/get_track_list.dart';
+
 part 'search_list_event.dart';
 part 'search_list_state.dart';
 
@@ -43,18 +45,5 @@ class SearchListBloc extends Bloc<SearchListEvent, SearchListState> {
     on<GetListEvent>((event, emit) async {
       await songsList.getLists();
     });
-  }
-}
-
-class SongsList {
-  final OnAudioQuery _audioQuery = OnAudioQuery();
-  Future<List<SongModel>> getLists() async {
-    List<SongModel> query = await _audioQuery.querySongs(
-        sortType: null,
-        orderType: OrderType.ASC_OR_SMALLER,
-        uriType: UriType.EXTERNAL,
-        ignoreCase: true);
-
-    return query;
   }
 }

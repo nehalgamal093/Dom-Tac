@@ -1,13 +1,12 @@
 import 'package:dom_tac_music_player/bloc/search_list_bloc/search_list_bloc.dart';
 import 'package:dom_tac_music_player/presentation/pages/search/widgets/search_bar.dart';
+import 'package:dom_tac_music_player/presentation/pages/small_player/small_player.dart';
 import 'package:dom_tac_music_player/presentation/resources/colors_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
-
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:page_transition/page_transition.dart';
-
 import '../player/player_screen.dart';
 import '../tracks_list/widgets/track_tile.dart';
 
@@ -30,45 +29,35 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       backgroundColor: ColorsManager.primaryColor,
       appBar: searchBar(context, songController),
-      body: FutureBuilder(
-          future: _audioQuery.querySongs(
-              sortType: null,
-              orderType: OrderType.ASC_OR_SMALLER,
-              uriType: UriType.EXTERNAL,
-              ignoreCase: true),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                  itemCount: todos.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            PageTransition(
-                              duration: const Duration(milliseconds: 500),
-                              reverseDuration:
-                                  const Duration(milliseconds: 500),
-                              type: PageTransitionType.leftToRight,
-                              child: PlayerScreen(
-                                  songs: todos.map((e) => e.data).toList(),
-                                  songModel: todos,
-                                  currentIndex: index,
-                                  songName: todos[index].title,
-                                  albumName: todos[index].genre ?? 'Music',
-                                  path: todos[index].data,
-                                  player: widget.player),
-                            ),
-                          );
-                        },
-                        child: trackTile(index, todos[index].title.toString(),
-                            todos[index].id, context));
-                  });
-            } else {
-              return const CircularProgressIndicator();
-            }
+      body: ListView.builder(
+          itemCount: todos.length,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                      duration: const Duration(milliseconds: 500),
+                      reverseDuration: const Duration(milliseconds: 500),
+                      type: PageTransitionType.leftToRight,
+                      child: PlayerScreen(
+                          songs: todos.map((e) => e.data).toList(),
+                          songModel: todos,
+                          currentIndex: index,
+                          songName: todos[index].title,
+                          albumName: todos[index].genre ?? 'Music',
+                          path: todos[index].data,
+                          player: widget.player),
+                    ),
+                  );
+                },
+                child: trackTile(index, todos[index].title.toString(),
+                    todos[index].id, context));
           }),
+      bottomSheet: todos.length == 0
+          ? Container(height: 0)
+          : smallPlayer(context, widget.player, todos, 2, _audioQuery),
     );
   }
 }

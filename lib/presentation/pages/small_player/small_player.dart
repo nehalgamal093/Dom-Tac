@@ -1,13 +1,11 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../resources/colors_manager.dart';
-import '../../shared prefs/shared_prefs.dart';
+import '../../resources/assets_manager.dart';
 
 Widget smallPlayer(BuildContext context, AudioPlayer player,
-    List<SongModel> model, int index) {
+    List<SongModel> model, int index, OnAudioQuery onAudioQuery) {
   double height = MediaQuery.of(context).size.height;
   return StreamBuilder<PlayerState>(
       stream: player.playerStateStream,
@@ -17,10 +15,9 @@ Widget smallPlayer(BuildContext context, AudioPlayer player,
           return Container(
             height: height * .1,
             decoration: const BoxDecoration(
-              color: ColorsManager.primaryColor,
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
-              ),
+              color: Color.fromARGB(255, 60, 59, 60),
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(20), topLeft: Radius.circular(20)),
             ),
             width: MediaQuery.of(context).size.width,
             child: Column(
@@ -30,23 +27,52 @@ Widget smallPlayer(BuildContext context, AudioPlayer player,
               children: [
                 Row(
                   children: [
-                    const SizedBox(width: 20),
-                    Container(width: 40, height: 40, color: Colors.red),
                     const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          model[index].title,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              overflow: TextOverflow.ellipsis),
-                        ),
-                        Text(
-                          'The best damn thing',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
+                    FutureBuilder<Uint8List?>(
+                        future: onAudioQuery.queryArtwork(
+                            model[player.currentIndex == null
+                                    ? index
+                                    : player.currentIndex!]
+                                .id,
+                            ArtworkType.AUDIO),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: Image.memory(snapshot.data!),
+                            );
+                          } else {
+                            return SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Image.asset(AssetsManager.albumCover));
+                          }
+                        }),
+                    const SizedBox(width: 10),
+                    SizedBox(
+                      width: 150,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            model[player.currentIndex == null
+                                    ? index
+                                    : player.currentIndex!]
+                                .title,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                          Text(
+                            model[player.currentIndex == null
+                                    ? index
+                                    : player.currentIndex!]
+                                .artist!,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(width: 40),
                     InkWell(
@@ -75,16 +101,15 @@ Widget smallPlayer(BuildContext context, AudioPlayer player,
                             ),
                           ),
                     InkWell(
-                      onTap: () async {
-                        SharedPreferences sharedPreferences =
-                            await SharedPreferences.getInstance();
-                        await sharedPreferences.setInt('index', 1);
-                      },
+                      onTap: () async {},
                       child: const Icon(
                         Icons.skip_next_outlined,
                         color: Colors.white,
                         size: 40,
                       ),
+                    ),
+                    const SizedBox(
+                      width: 10,
                     )
                   ],
                 )

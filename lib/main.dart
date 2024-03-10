@@ -1,8 +1,11 @@
+import 'package:dom_tac_music_player/bloc/get_last_played_audio_bloc/get_last_played_audio_bloc.dart';
+import 'package:dom_tac_music_player/bloc/get_track_list_bloc/get_track_list_bloc.dart';
 import 'package:dom_tac_music_player/bloc/play_pause_bloc/play_pause_bloc.dart';
 import 'package:dom_tac_music_player/bloc/search_list_bloc/search_list_bloc.dart';
 import 'package:dom_tac_music_player/bloc/search_term_bloc/search_term_bloc.dart';
+import 'package:dom_tac_music_player/presentation/pages/main_page/main_page.dart';
 import 'package:dom_tac_music_player/presentation/pages/tracks_list/tracks_list_screen.dart';
-import 'package:dom_tac_music_player/presentation/shared%20prefs/shared_prefs.dart';
+import 'package:dom_tac_music_player/services/get_track_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,6 +24,13 @@ void main() async {
               songsList: SongsList(),
               searchTermBloc: BlocProvider.of<SearchTermBloc>(context)),
         ),
+        BlocProvider(
+          create: (context) =>
+              GetTrackListBloc(songsList: SongsList())..add(TrackListEvent()),
+        ),
+        BlocProvider(
+          create: (context) => GetLastPlayedAudioBloc(),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -38,7 +48,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const TracksListScreen(),
+      home: MainPage(),
     );
   }
 }

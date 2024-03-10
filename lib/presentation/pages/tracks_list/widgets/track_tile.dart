@@ -9,46 +9,30 @@ Widget trackTile(int index, String title, int id, BuildContext context) {
   OnAudioQuery audioQuery = OnAudioQuery();
   return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-      child: Container(
-        width: 300,
-        height: 80,
-        decoration: const BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Color.fromARGB(255, 2, 22, 55),
-              Color.fromARGB(255, 3, 18, 44),
-            ],
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              FutureBuilder<Uint8List?>(
-                  future: audioQuery.queryArtwork(id, ArtworkType.AUDIO),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return SizedBox(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            FutureBuilder<Uint8List?>(
+                future: audioQuery.queryArtwork(id, ArtworkType.AUDIO),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Image.memory(snapshot.data!),
+                    );
+                  } else {
+                    return SizedBox(
                         width: 50,
                         height: 50,
-                        child: Image.memory(snapshot.data!),
-                      );
-                    } else {
-                      return SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Image.asset(AssetsManager.albumCover));
-                    }
-                  }),
-              const SizedBox(width: 10),
-              trackNameWidget(index, title, context)
-            ],
-          ),
+                        child: Image.asset(AssetsManager.albumCover));
+                  }
+                }),
+            const SizedBox(width: 10),
+            trackNameWidget(index, title, context)
+          ],
         ),
       ));
 }

@@ -11,10 +11,13 @@ Widget trackNameWidget(int index, String title, BuildContext context) {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          title,
-          style: const TextStyle(
-              color: Colors.white, overflow: TextOverflow.ellipsis),
+        SizedBox(
+          width: 200,
+          child: Text(
+            title,
+            style: const TextStyle(
+                color: Colors.white, overflow: TextOverflow.ellipsis),
+          ),
         ),
         Row(
           children: [
@@ -32,9 +35,9 @@ Widget trackNameWidget(int index, String title, BuildContext context) {
               const SizedBox(
                 width: 10,
               ),
-              index == 2
-                  ? playTrackBtn(Icons.play_arrow, true)
-                  : playTrackBtn(Icons.play_arrow, false)
+              playTrackBtn(
+                Icons.favorite,
+              )
             ])
           ],
         )

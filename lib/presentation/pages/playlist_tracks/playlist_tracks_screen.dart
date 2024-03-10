@@ -3,7 +3,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import '../../resources/colors_manager.dart';
 import '../appBar/top_app_bar.dart';
-import '../drawer/drawer_widget.dart';
+
 import '../player/player_screen.dart';
 import '../tracks_list/widgets/track_tile.dart';
 
@@ -25,7 +25,7 @@ class _PlaylistTracksListState extends State<PlaylistTracksList> {
     return Scaffold(
         backgroundColor: ColorsManager.primaryColor,
         appBar: topAppBar(context, audioPlayer, false),
-        endDrawer: drawerWidget(context, audioPlayer),
+        // endDrawer: drawerWidget(context, audioPlayer),
         body: FutureBuilder(
             future: _audioQuery.querySongs(
                 sortType: null,
@@ -50,7 +50,6 @@ class _PlaylistTracksListState extends State<PlaylistTracksList> {
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
-                            print(snapshot.data![index].id);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
