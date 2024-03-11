@@ -1,33 +1,24 @@
-import 'package:dom_tac_music_player/bloc/song_details_bloc/song_details_bloc.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/widgets/add_love_bar.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/widgets/controls_bar.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/widgets/controls_btns.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/widgets/track_name.dart';
 import 'package:dom_tac_music_player/presentation/pages/player/widgets/track_photo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../resources/colors_manager.dart';
-import '../appBar/top_app_bar.dart';
 
 class PlayerScreen extends StatefulWidget {
   final List<SongModel> songModel;
   final String path;
-  int currentIndex;
-  final String songName;
-  final String albumName;
+
   final AudioPlayer player;
-  final List<String> songs;
-  PlayerScreen(
+
+  const PlayerScreen(
       {super.key,
       required this.path,
-      required this.songName,
-      required this.albumName,
       required this.player,
-      required this.songs,
-      required this.currentIndex,
       required this.songModel});
 
   @override
@@ -35,43 +26,15 @@ class PlayerScreen extends StatefulWidget {
 }
 
 class _PlayerScreenState extends State<PlayerScreen> {
-  Future<void> _loadAndPlayInitialAudio() async {
-    await widget.player.setAudioSource(
-        ConcatenatingAudioSource(
-            children: widget.songs.map((e) => AudioSource.file(e)).toList()),
-        initialIndex: widget.currentIndex,
-        initialPosition: Duration.zero);
-
-    widget.player.play();
-  }
-
   Future<void> saveLastSong(int lastPlayedAudioIndex) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setInt('last-index', lastPlayedAudioIndex);
   }
 
-  // void playNextAudio() async {
-  //   if (widget.currentIndex + 1 < widget.songs.length) {
-  //     widget.currentIndex++;
-  //     await widget.player.seek(Duration.zero, index: widget.currentIndex);
-  //   } else {
-  //     print("Reached the end of the playlist");
-  //   }
-  // }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsFlutterBinding.ensureInitialized();
-    _loadAndPlayInitialAudio();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: topAppBar(context, widget.player, true),
-        backgroundColor: ColorsManager.primaryColor,
-        body: mainPage());
+        backgroundColor: ColorsManager.primaryColor, body: mainPage());
   }
 
   Widget mainPage() {
@@ -80,20 +43,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
     return SingleChildScrollView(
       child: SizedBox(
         width: width,
-        height: height * .80,
+        height: height,
         child: StreamBuilder<PlayerState>(
             stream: widget.player.playerStateStream,
             builder: (context, snapshot) {
               final playing = snapshot.data?.playing;
-
               if (snapshot.hasData) {
-                saveLastSong(widget.player.currentIndex!);
-                context.read<SongDetailsBloc>().add(SongEvent(
-                    title: widget.songModel[widget.player.currentIndex!].title,
-                    artist:
-                        widget.songModel[widget.player.currentIndex!].artist!,
-                    id: widget.songModel[widget.player.currentIndex!].id,
-                    index: widget.player.currentIndex!));
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -129,3 +84,4 @@ class _PlayerScreenState extends State<PlayerScreen> {
     );
   }
 }
+//87

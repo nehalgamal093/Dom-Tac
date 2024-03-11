@@ -20,28 +20,28 @@ Widget trackPhoto(BuildContext context, List<SongModel> songs, int index) {
       padding: const EdgeInsets.all(8.0),
       child: ClipOval(
         child: Container(
-            width: 300,
-            height: 300,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-              color: Colors.black,
+          width: 300,
+          height: 300,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
             ),
-            child: FutureBuilder<Uint8List?>(
-                future:
-                    audioQuery.queryArtwork(songs[index].id, ArtworkType.AUDIO),
-                builder: (context, snapshot) {
-                  print('-3-3-3-3-${index}');
-                  if (snapshot.hasData) {
-                    return Image.memory(
-                      snapshot.data!,
-                      fit: BoxFit.cover,
-                    );
-                  } else {
-                    return Image.asset(AssetsManager.albumCover);
-                  }
-                })),
+            color: Colors.black,
+          ),
+          child: FutureBuilder<Uint8List?>(
+              future:
+                  audioQuery.queryArtwork(songs[index].id, ArtworkType.AUDIO),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Image.memory(
+                    snapshot.data!,
+                    fit: BoxFit.cover,
+                  );
+                } else {
+                  return Image.asset(AssetsManager.albumCover);
+                }
+              }),
+        ),
       ),
     ),
   );

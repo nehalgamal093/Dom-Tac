@@ -8,7 +8,7 @@ PreferredSize playlistAppBar(BuildContext context) {
         child: AppBar(
           backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
-          title: Text(
+          title: const Text(
             'Playlists',
             style: TextStyle(color: Colors.white),
           ),

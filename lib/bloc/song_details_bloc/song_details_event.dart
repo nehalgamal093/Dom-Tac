@@ -7,6 +7,7 @@ sealed class SongDetailsEvent extends Equatable {
   List<Object> get props => [];
 }
 
+// ignore: must_be_immutable
 class SongEvent extends SongDetailsEvent {
   String title;
   String artist;

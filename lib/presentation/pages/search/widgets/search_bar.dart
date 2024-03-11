@@ -1,13 +1,9 @@
-import 'dart:async';
-
 import 'package:dom_tac_music_player/presentation/pages/appBar/widgets/app_bar_btns.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../bloc/is_home_bloc/is_home_bloc.dart';
 import '../../../../bloc/search_term_bloc/search_term_bloc.dart';
 
-final debounce = Debounce(milliseconds: 1000);
 PreferredSize searchBar(
     BuildContext context, TextEditingController songController) {
   return PreferredSize(
@@ -19,7 +15,9 @@ PreferredSize searchBar(
         automaticallyImplyLeading: false,
         leading: InkWell(
           onTap: () {
-            context.read<IsHomeBloc>().add(setCurrentWidgetEvent(isHome: true));
+            context
+                .read<IsHomeBloc>()
+                .add(const setCurrentWidgetEvent(isHome: true));
           },
           child: appBarBtns(Icons.arrow_back),
         ),
@@ -55,19 +53,4 @@ PreferredSize searchBar(
       ),
     ),
   );
-}
-
-class Debounce {
-  final int milliseconds;
-  Debounce({
-    this.milliseconds = 500,
-  });
-  Timer? _timer;
-
-  void run(VoidCallback action) {
-    if (_timer != null) {
-      _timer!.cancel();
-    }
-    _timer = Timer(Duration(milliseconds: milliseconds), action);
-  }
 }

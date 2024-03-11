@@ -6,6 +6,7 @@ part 'song_details_state.dart';
 class SongDetailsBloc extends Bloc<SongDetailsEvent, SongDetailsState> {
   SongDetailsBloc() : super(SongDetailsState.initial()) {
     on<SongEvent>((event, emit) {
+      print('Event index${event.index}');
       emit(state.copyWith(
           title: event.title,
           artist: event.artist,

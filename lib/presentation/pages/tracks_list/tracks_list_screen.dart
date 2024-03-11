@@ -3,14 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:page_transition/page_transition.dart';
 import '../../../bloc/get_track_list_bloc/get_track_list_bloc.dart';
 import '../../../bloc/song_details_bloc/song_details_bloc.dart';
 import '../../../services/get_track_list.dart';
-import '../player/player_screen.dart';
 
-Widget tracksScreen(
-    bool hasPermission, AudioPlayer player, OnAudioQuery onAudioQuery) {
+Widget tracksScreen(bool hasPermission, AudioPlayer player,
+    OnAudioQuery onAudioQuery, BuildContext context) {
+  // ignore: no_leading_underscores_for_local_identifiers
+  Future<void> _loadAndPlayInitialAudio(int i) async {
+    List<String> songs = context
+        .read<GetTrackListBloc>()
+        .state
+        .songList
+        .map((e) => e.data)
+        .toList();
+
+    await player.setAudioSource(
+        ConcatenatingAudioSource(
+            children: songs.map((e) => AudioSource.file(e)).toList()),
+        initialIndex: i,
+        initialPosition: Duration.zero);
+    player.play();
+  }
+
   return !hasPermission
       ? Container()
       : BlocProvider(
@@ -22,34 +37,19 @@ Widget tracksScreen(
                 return Column(children: [
                   Expanded(
                     child: ListView.separated(
-                        separatorBuilder: ((context, index) => Divider(
+                        separatorBuilder: ((context, index) => const Divider(
                               thickness: .05,
                             )),
                         itemCount: state.songList.length,
                         itemBuilder: (context, index) {
                           return InkWell(
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    duration: const Duration(milliseconds: 500),
-                                    reverseDuration:
-                                        const Duration(milliseconds: 500),
-                                    type: PageTransitionType.leftToRight,
-                                    child: PlayerScreen(
-                                        currentIndex: index,
-                                        songs: state.songList
-                                            .map((e) => e.data)
-                                            .toList(),
-                                        player: player,
-                                        songName: state.songList[index].title,
-                                        albumName:
-                                            state.songList[index].genre ??
-                                                'Music',
-                                        path: state.songList[index].data,
-                                        songModel: state.songList),
-                                  ),
-                                );
+                                _loadAndPlayInitialAudio(index);
+                                context.read<SongDetailsBloc>().add(SongEvent(
+                                    title: state.songList[index].title,
+                                    artist: state.songList[index].artist!,
+                                    id: state.songList[index].id,
+                                    index: index));
                               },
                               child: trackTile(
                                   index,

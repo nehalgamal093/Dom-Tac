@@ -3,9 +3,6 @@ import 'package:dom_tac_music_player/presentation/pages/playlist_tracks/playlist
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import '../../resources/colors_manager.dart';
-import '../appBar/top_app_bar.dart';
-import '../drawer/drawer_widget.dart';
 import '../tracks_list/widgets/track_tile.dart';
 
 Widget playlistScreen(OnAudioQuery audioQuery, AudioPlayer player) {
@@ -28,7 +25,6 @@ Widget playlistScreen(OnAudioQuery audioQuery, AudioPlayer player) {
                     onTap: () async {
                       final file = File(listOfPlayLists[index].data!);
                       final lines = await file.readAsLines();
-                      String name = 'Nehal';
 
                       // ignore: use_build_context_synchronously
                       Navigator.push(

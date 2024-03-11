@@ -1,4 +1,3 @@
-import 'package:dom_tac_music_player/presentation/resources/assets_manager.dart';
 import 'package:flutter/material.dart';
 
 Widget playListTile(String playlistName, String playlistImage) {
@@ -13,7 +12,7 @@ Widget playListTile(String playlistName, String playlistImage) {
           child: Row(
             children: [
               Image.asset(playlistImage),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text(
                 playlistName,
                 style: const TextStyle(
@@ -24,13 +23,14 @@ Widget playListTile(String playlistName, String playlistImage) {
             ],
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         const Divider(
           height: 5,
           thickness: .05,
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
       ],
     ),
   );
 }
+// 37🐨

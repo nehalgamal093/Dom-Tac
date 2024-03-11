@@ -1,8 +1,9 @@
-import 'package:dom_tac_music_player/presentation/pages/player/widgets/player_btn.dart';
+import 'package:dom_tac_music_player/presentation/pages/player/widgets/play_pause_btn.dart';
+import 'package:dom_tac_music_player/presentation/pages/player/widgets/next_previous_btn.dart';
+import 'package:dom_tac_music_player/presentation/pages/player/widgets/shuffle_repeat_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
-AudioPlayer audioPlayer = AudioPlayer();
 Widget controlsBtns(
   String path,
   bool isPlaying,
@@ -17,7 +18,7 @@ Widget controlsBtns(
             onTap: () {
               audioPlayer.setLoopMode(LoopMode.one);
             },
-            child: playerBtn(Icons.repeat)),
+            child: shuffleRepeatBtn(Icons.repeat)),
         InkWell(
           onTap: () {
             audioPlayer.seekToPrevious();
@@ -28,8 +29,9 @@ Widget controlsBtns(
         ),
         isPlaying != true
             ? InkWell(
-                onTap: audioPlayer.play, child: clickedBtn(Icons.play_arrow))
-            : InkWell(onTap: audioPlayer.pause, child: clickedBtn(Icons.pause)),
+                onTap: audioPlayer.play, child: playPauseBtn(Icons.play_arrow))
+            : InkWell(
+                onTap: audioPlayer.pause, child: playPauseBtn(Icons.pause)),
         InkWell(
           onTap: () {
             audioPlayer.seekToNext();
@@ -42,8 +44,9 @@ Widget controlsBtns(
             onTap: () {
               audioPlayer.setShuffleModeEnabled(true);
             },
-            child: playerBtn(Icons.shuffle))
+            child: shuffleRepeatBtn(Icons.shuffle))
       ],
     ),
   );
 }
+//52
