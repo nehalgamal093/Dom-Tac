@@ -5,7 +5,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../../resources/assets_manager.dart';
 import 'create_playlist_btn.dart';
 
-Widget playlistList(OnAudioQuery audioQuery) {
+Widget playlistList(OnAudioQuery audioQuery, int audioId) {
   return FutureBuilder(
       future: audioQuery.queryPlaylists(
           sortType: null,
@@ -24,7 +24,8 @@ Widget playlistList(OnAudioQuery audioQuery) {
               createPlaylistBtn(audioQuery, context),
               playListTile('Favourite playlist', AssetsManager.heart),
               for (final item in listOfPlayLists)
-                editPlayListBtn(context, audioQuery, item.id, item.playlist)
+                playListItem(
+                    context, audioQuery, item.id, item.playlist, audioId)
             ],
           );
         } else {

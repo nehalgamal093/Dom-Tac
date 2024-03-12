@@ -13,6 +13,7 @@ import '../../../bloc/get_last_played_audio_bloc/get_last_played_audio_bloc.dart
 import '../../../bloc/get_track_list_bloc/get_track_list_bloc.dart';
 import '../small_player/small_player.dart';
 import '../tracks_list/tracks_list_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -28,13 +29,8 @@ class _MainPageState extends State<MainPage> {
 
   int? index;
   int? lastPlayedDuration;
-  bool _hasPermission = false;
-  final TextEditingController songController = TextEditingController();
 
-  checkAndRequestPermissions({bool retry = false}) async {
-    _hasPermission = await audioQuery.checkAndRequest();
-    _hasPermission ? setState(() {}) : null;
-  }
+  final TextEditingController songController = TextEditingController();
 
   Future<void> _getValue() async {
     profileData = await SharedPreferences.getInstance();
@@ -54,12 +50,20 @@ class _MainPageState extends State<MainPage> {
         );
   }
 
+  bool isGranted = false;
+  requestStoragePermission() async {
+    PermissionStatus storageStatus = await Permission.storage.request();
+    isGranted = storageStatus.isGranted;
+    isGranted ? setState(() {}) : null;
+  }
+
   @override
   void initState() {
     super.initState();
     _getValue();
     getPosition();
-    checkAndRequestPermissions(retry: true);
+    WidgetsFlutterBinding.ensureInitialized();
+    requestStoragePermission();
   }
 
   @override
@@ -74,7 +78,7 @@ class _MainPageState extends State<MainPage> {
         body: context.watch<IsHomeBloc>().state.isHome
             ? TabBarView(
                 children: [
-                  tracksScreen(_hasPermission, player, audioQuery, context),
+                  tracksScreen(player, audioQuery, context),
                   playlistScreen(audioQuery, player),
                 ],
               )

@@ -31,7 +31,7 @@ Widget trackTile(int index, String title, int id, BuildContext context) {
                   }
                 }),
             const SizedBox(width: 10),
-            trackNameWidget(index, title, context)
+            trackNameWidget(index, title, context, id)
           ],
         ),
       ));

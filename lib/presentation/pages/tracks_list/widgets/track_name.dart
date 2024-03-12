@@ -3,7 +3,8 @@ import 'package:dom_tac_music_player/presentation/pages/tracks_list/widgets/like
 import 'package:dom_tac_music_player/presentation/pages/tracks_list/widgets/played_btn.dart';
 import 'package:flutter/material.dart';
 
-Widget trackNameWidget(int index, String title, BuildContext context) {
+Widget trackNameWidget(
+    int index, String title, BuildContext context, int audioId) {
   return SizedBox(
     width: 300,
     height: 60,
@@ -29,7 +30,8 @@ Widget trackNameWidget(int index, String title, BuildContext context) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AddToPlaylistScreen()));
+                            builder: (context) =>
+                                AddToPlaylistScreen(audioId: audioId)));
                   },
                   child: addToPlaylistBtn(Icons.add)),
               const SizedBox(

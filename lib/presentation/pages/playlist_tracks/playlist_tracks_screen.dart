@@ -7,8 +7,12 @@ import '../tracks_list/widgets/track_tile.dart';
 class PlaylistTracksList extends StatefulWidget {
   final List<String> data;
   final AudioPlayer player;
-  const PlaylistTracksList(
-      {super.key, required this.data, required this.player});
+
+  const PlaylistTracksList({
+    super.key,
+    required this.data,
+    required this.player,
+  });
 
   @override
   State<PlaylistTracksList> createState() => _PlaylistTracksListState();
@@ -32,10 +36,11 @@ class _PlaylistTracksListState extends State<PlaylistTracksList> {
                 List<SongModel> u = [];
 
                 List<String> songs = widget.data.map((e) => e).toList();
-                for (var img in snapshot.data!) {
-                  for (var frnd in songs) {
-                    if (img.data.contains(frnd)) {
-                      u.add(img);
+                for (var item in snapshot.data!) {
+                  for (var song in songs) {
+                    if (item.data.contains(song)) {
+                      u.add(item);
+                      print('u is ${u}');
                     }
                   }
                 }

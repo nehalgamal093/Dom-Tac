@@ -8,47 +8,47 @@ import '../../../bloc/song_details_bloc/song_details_bloc.dart';
 import '../../../common/check_permission.dart';
 import '../../../services/get_track_list.dart';
 
-Widget tracksScreen(bool hasPermission, AudioPlayer player,
-    OnAudioQuery onAudioQuery, BuildContext context) {
-  return !hasPermission
-      ? Container()
-      : BlocProvider(
-          create: (context) =>
-              GetTrackListBloc(songsList: SongsList())..add(TrackListEvent()),
-          child: BlocBuilder<GetTrackListBloc, GetTrackListState>(
-            builder: (context, state) {
-              if (state.status == Status.loaded) {
-                return Column(children: [
-                  Expanded(
-                    child: ListView.separated(
-                        separatorBuilder: ((context, index) => const Divider(
-                              thickness: .05,
-                            )),
-                        itemCount: state.songList.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                              onTap: () {
-                                loadAndPlayInitialAudio(
-                                    index, context, player, Duration.zero);
-                                context.read<SongDetailsBloc>().add(SongEvent(
-                                    title: state.songList[index].title,
-                                    artist: state.songList[index].artist!,
-                                    id: state.songList[index].id,
-                                    index: index));
-                              },
-                              child: trackTile(
-                                  index,
-                                  state.songList[index].title.toString(),
-                                  state.songList[index].id,
-                                  context));
-                        }),
-                  ),
-                ]);
-              } else {
-                return Container();
-              }
-            },
-          ),
-        );
+Widget tracksScreen(
+    AudioPlayer player, OnAudioQuery onAudioQuery, BuildContext context) {
+  return BlocProvider(
+    create: (context) =>
+        GetTrackListBloc(songsList: SongsList())..add(TrackListEvent()),
+    child: BlocBuilder<GetTrackListBloc, GetTrackListState>(
+      builder: (context, state) {
+        if (state.status == Status.loaded) {
+          return Column(children: [
+            Expanded(
+              child: ListView.separated(
+                  separatorBuilder: ((context, index) => const Divider(
+                        thickness: .05,
+                      )),
+                  itemCount: state.songList.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                        onTap: () {
+                          print(
+                              'Track informartion ${state.songList.first.id}');
+                          loadAndPlayInitialAudio(
+                              index, context, player, Duration.zero);
+                          context.read<SongDetailsBloc>().add(SongEvent(
+                              title: state.songList[index].title,
+                              artist: state.songList[index].artist!,
+                              id: state.songList[index].id,
+                              index: index));
+                        },
+                        child: trackTile(
+                            index,
+                            state.songList[index].title.toString(),
+                            state.songList[index].id,
+                            context));
+                  }),
+            ),
+          ]);
+        } else {
+          return Container();
+        }
+      },
+    ),
+  );
 }
 //53

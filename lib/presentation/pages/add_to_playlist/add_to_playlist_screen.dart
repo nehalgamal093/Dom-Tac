@@ -4,9 +4,18 @@ import 'package:dom_tac_music_player/presentation/resources/colors_manager.dart'
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class AddToPlaylistScreen extends StatelessWidget {
-  AddToPlaylistScreen({super.key});
+class AddToPlaylistScreen extends StatefulWidget {
+  final int audioId;
+
+  AddToPlaylistScreen({super.key, required this.audioId});
+
+  @override
+  State<AddToPlaylistScreen> createState() => _AddToPlaylistScreenState();
+}
+
+class _AddToPlaylistScreenState extends State<AddToPlaylistScreen> {
   final _audioQuery = OnAudioQuery();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +29,7 @@ class AddToPlaylistScreen extends StatelessWidget {
               color: ColorsManager.secondaryColor,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-          child: playlistList(_audioQuery)),
+          child: playlistList(_audioQuery, widget.audioId)),
     );
   }
 }

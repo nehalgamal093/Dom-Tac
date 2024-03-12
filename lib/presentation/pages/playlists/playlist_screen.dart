@@ -25,7 +25,7 @@ Widget playlistScreen(OnAudioQuery audioQuery, AudioPlayer player) {
                     onTap: () async {
                       final file = File(listOfPlayLists[index].data!);
                       final lines = await file.readAsLines();
-
+                      // print('lines are ${listOfPlayLists[index].getMap}');
                       // ignore: use_build_context_synchronously
                       Navigator.push(
                           context,
@@ -36,12 +36,13 @@ Widget playlistScreen(OnAudioQuery audioQuery, AudioPlayer player) {
                                   )));
                     },
                     child: trackTile(
-                        index,
-                        listOfPlayLists[index].playlist.substring(
-                              12,
-                            ),
-                        listOfPlayLists[index].id,
-                        context));
+                      index,
+                      listOfPlayLists[index].playlist.substring(
+                            12,
+                          ),
+                      listOfPlayLists[index].id,
+                      context,
+                    ));
               });
         } else {
           return const CircularProgressIndicator();

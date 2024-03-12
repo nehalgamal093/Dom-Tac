@@ -34,6 +34,7 @@ dependencies:
   just_audio: ^0.9.36
   page_transition: ^2.1.0
   shared_preferences: ^2.2.2
+  permission_handler: ^11.0.1
 
 dev_dependencies:
   flutter_test:
