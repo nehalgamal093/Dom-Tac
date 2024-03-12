@@ -13,7 +13,7 @@ import '../../resources/assets_manager.dart';
 import '../player/player_screen.dart';
 
 Widget smallPlayer(BuildContext context, AudioPlayer player,
-    List<SongModel> model, int index, OnAudioQuery onAudioQuery) {
+    List<SongModel> model, int index, OnAudioQuery onAudioQuery, int duration) {
   Future<void> saveLastSong(int lastPlayedAudioIndex) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setInt('last-index', lastPlayedAudioIndex);
@@ -23,16 +23,18 @@ Widget smallPlayer(BuildContext context, AudioPlayer player,
   return InkWell(
     onTap: () async {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PlayerScreen(
-                songModel: model, path: model[index].data, player: player),
-          ));
+        context,
+        MaterialPageRoute(
+          builder: (context) => PlayerScreen(
+              songModel: model, path: model[index].data, player: player),
+        ),
+      );
     },
     child: StreamBuilder<PlayerState>(
         stream: player.playerStateStream,
         builder: (context, snapshot) {
           final playing = snapshot.data?.playing;
+
           if (snapshot.hasData) {
             player.currentIndex == null
                 ? null
@@ -116,7 +118,9 @@ Widget smallPlayer(BuildContext context, AudioPlayer player,
                       ),
                       const SizedBox(width: 40),
                       previousBtn(player),
-                      playing != true ? playBtn(player) : pauseBtn(player),
+                      playing != true
+                          ? playBtn(player, context, index, duration)
+                          : pauseBtn(player),
                       nextBtn(player),
                       const SizedBox(
                         width: 10,

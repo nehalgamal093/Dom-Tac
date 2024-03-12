@@ -1,3 +1,4 @@
+import 'package:dom_tac_music_player/bloc/get_last_played_position_bloc/get_last_played_position_bloc.dart';
 import 'package:dom_tac_music_player/bloc/is_home_bloc/is_home_bloc.dart';
 import 'package:dom_tac_music_player/presentation/pages/main_page/widgets/main_app_bar.dart';
 import 'package:dom_tac_music_player/presentation/pages/playlists/playlist_screen.dart';
@@ -24,7 +25,9 @@ class _MainPageState extends State<MainPage> {
   final audioQuery = OnAudioQuery();
   final player = AudioPlayer();
   late SharedPreferences profileData;
+
   int? index;
+  int? lastPlayedDuration;
   bool _hasPermission = false;
   final TextEditingController songController = TextEditingController();
 
@@ -42,15 +45,27 @@ class _MainPageState extends State<MainPage> {
         );
   }
 
+  Future<void> getPosition() async {
+    profileData = await SharedPreferences.getInstance();
+    lastPlayedDuration = profileData.getInt('last-duration')!;
+    // ignore: use_build_context_synchronously
+    context.read<GetLastPlayedPositionBloc>().add(
+          LastPLayedPositionEvent(lastPlayedPosition: lastPlayedDuration!),
+        );
+  }
+
   @override
   void initState() {
     super.initState();
     _getValue();
+    getPosition();
     checkAndRequestPermissions(retry: true);
   }
 
   @override
   Widget build(BuildContext context) {
+    print(
+        'last Played Position ${context.read<GetLastPlayedPositionBloc>().state.lastPlayedPosition}');
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -65,12 +80,12 @@ class _MainPageState extends State<MainPage> {
               )
             : searchList(context, player),
         bottomSheet: smallPlayer(
-          context,
-          player,
-          context.read<GetTrackListBloc>().state.songList,
-          context.read<GetLastPlayedAudioBloc>().state.lastPlayedSongIndex,
-          audioQuery,
-        ),
+            context,
+            player,
+            context.read<GetTrackListBloc>().state.songList,
+            context.read<GetLastPlayedAudioBloc>().state.lastPlayedSongIndex,
+            audioQuery,
+            context.read<GetLastPlayedPositionBloc>().state.lastPlayedPosition),
       ),
     );
   }

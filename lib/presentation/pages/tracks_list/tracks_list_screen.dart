@@ -5,27 +5,11 @@ import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import '../../../bloc/get_track_list_bloc/get_track_list_bloc.dart';
 import '../../../bloc/song_details_bloc/song_details_bloc.dart';
+import '../../../common/check_permission.dart';
 import '../../../services/get_track_list.dart';
 
 Widget tracksScreen(bool hasPermission, AudioPlayer player,
     OnAudioQuery onAudioQuery, BuildContext context) {
-  // ignore: no_leading_underscores_for_local_identifiers
-  Future<void> _loadAndPlayInitialAudio(int i) async {
-    List<String> songs = context
-        .read<GetTrackListBloc>()
-        .state
-        .songList
-        .map((e) => e.data)
-        .toList();
-
-    await player.setAudioSource(
-        ConcatenatingAudioSource(
-            children: songs.map((e) => AudioSource.file(e)).toList()),
-        initialIndex: i,
-        initialPosition: Duration.zero);
-    player.play();
-  }
-
   return !hasPermission
       ? Container()
       : BlocProvider(
@@ -44,7 +28,8 @@ Widget tracksScreen(bool hasPermission, AudioPlayer player,
                         itemBuilder: (context, index) {
                           return InkWell(
                               onTap: () {
-                                _loadAndPlayInitialAudio(index);
+                                loadAndPlayInitialAudio(
+                                    index, context, player, Duration.zero);
                                 context.read<SongDetailsBloc>().add(SongEvent(
                                     title: state.songList[index].title,
                                     artist: state.songList[index].artist!,
@@ -66,3 +51,4 @@ Widget tracksScreen(bool hasPermission, AudioPlayer player,
           ),
         );
 }
+//53

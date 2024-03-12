@@ -8,7 +8,7 @@ Widget controlsBar(
     width: 350,
     child: Column(children: [
       ProgressBar(
-        timeLabelTextStyle: TextStyle(color: Colors.white),
+        timeLabelTextStyle: const TextStyle(color: Colors.white),
         progress: progress,
         buffered: buffered,
         total: total,

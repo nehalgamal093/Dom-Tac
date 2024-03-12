@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import '../../resources/colors_manager.dart';
-import '../player/player_screen.dart';
 import '../tracks_list/widgets/track_tile.dart';
 
 class PlaylistTracksList extends StatefulWidget {
@@ -46,15 +45,15 @@ class _PlaylistTracksListState extends State<PlaylistTracksList> {
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PlayerScreen(
-                                    player: widget.player,
-                                    path: u[index].data,
-                                    songModel: u),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => PlayerScreen(
+                            //         player: widget.player,
+                            //         path: u[index].data,
+                            //         songModel: u),
+                            //   ),
+                            // );
                           },
                           child: trackTile(
                               index, u[index].title, u[index].id, context));

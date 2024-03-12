@@ -1,4 +1,5 @@
 import 'package:dom_tac_music_player/bloc/get_last_played_audio_bloc/get_last_played_audio_bloc.dart';
+import 'package:dom_tac_music_player/bloc/get_last_played_position_bloc/get_last_played_position_bloc.dart';
 import 'package:dom_tac_music_player/bloc/get_track_list_bloc/get_track_list_bloc.dart';
 import 'package:dom_tac_music_player/bloc/is_home_bloc/is_home_bloc.dart';
 import 'package:dom_tac_music_player/bloc/play_pause_bloc/play_pause_bloc.dart';
@@ -38,6 +39,9 @@ void main() async {
         BlocProvider(
           create: (context) => GetLastPlayedAudioBloc(),
         ),
+        BlocProvider(
+          create: (context) => GetLastPlayedPositionBloc(),
+        )
       ],
       child: const MyApp(),
     ),

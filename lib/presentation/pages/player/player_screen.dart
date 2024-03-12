@@ -62,7 +62,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         stream: widget.player.positionStream,
                         builder: (context, snapshot) {
                           return controlsBar(
-                              snapshot.data ?? Duration.zero,
+                              snapshot.data ?? widget.player.duration!,
                               widget.player.bufferedPosition,
                               widget.player.duration ?? Duration.zero,
                               widget.player);
