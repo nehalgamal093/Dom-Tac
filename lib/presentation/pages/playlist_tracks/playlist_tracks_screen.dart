@@ -7,12 +7,12 @@ import '../tracks_list/widgets/track_tile.dart';
 class PlaylistTracksList extends StatefulWidget {
   final List<String> data;
   final AudioPlayer player;
-
-  const PlaylistTracksList({
-    super.key,
-    required this.data,
-    required this.player,
-  });
+  final OnAudioQuery audioQuery;
+  const PlaylistTracksList(
+      {super.key,
+      required this.data,
+      required this.player,
+      required this.audioQuery});
 
   @override
   State<PlaylistTracksList> createState() => _PlaylistTracksListState();
@@ -20,13 +20,13 @@ class PlaylistTracksList extends StatefulWidget {
 
 class _PlaylistTracksListState extends State<PlaylistTracksList> {
   AudioPlayer audioPlayer = AudioPlayer();
-  final _audioQuery = OnAudioQuery();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: ColorsManager.primaryColor,
         body: FutureBuilder(
-            future: _audioQuery.querySongs(
+            future: widget.audioQuery.querySongs(
                 sortType: null,
                 orderType: OrderType.ASC_OR_SMALLER,
                 uriType: UriType.EXTERNAL,
@@ -60,8 +60,8 @@ class _PlaylistTracksListState extends State<PlaylistTracksList> {
                             //   ),
                             // );
                           },
-                          child: trackTile(
-                              index, u[index].title, u[index].id, context));
+                          child: trackTile(index, u[index].title, u[index].id,
+                              context, widget.audioQuery));
                     });
               } else {
                 return const CircularProgressIndicator();

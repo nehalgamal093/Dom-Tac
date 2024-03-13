@@ -23,8 +23,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final audioQuery = OnAudioQuery();
-  final player = AudioPlayer();
   late SharedPreferences profileData;
 
   int? index;
@@ -66,6 +64,8 @@ class _MainPageState extends State<MainPage> {
     requestStoragePermission();
   }
 
+  final player = AudioPlayer();
+  final audioQuery = OnAudioQuery();
   @override
   Widget build(BuildContext context) {
     print(
@@ -82,7 +82,7 @@ class _MainPageState extends State<MainPage> {
                   playlistScreen(audioQuery, player),
                 ],
               )
-            : searchList(context, player),
+            : searchList(context, player, audioQuery),
         bottomSheet: smallPlayer(
             context,
             player,

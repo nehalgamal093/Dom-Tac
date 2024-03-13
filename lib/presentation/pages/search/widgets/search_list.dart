@@ -2,12 +2,14 @@ import 'package:dom_tac_music_player/bloc/get_track_list_bloc/get_track_list_blo
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import '../../../../bloc/search_list_bloc/search_list_bloc.dart';
 import '../../../../bloc/song_details_bloc/song_details_bloc.dart';
 import '../../../../services/get_track_list.dart';
 import '../../tracks_list/widgets/track_tile.dart';
 
-Widget searchList(BuildContext context, AudioPlayer player) {
+Widget searchList(
+    BuildContext context, AudioPlayer player, OnAudioQuery audioQuery) {
   final songs = context.watch<GetTrackListBloc>().state.songList;
   final todos = context.watch<SearchListBloc>().state.songList;
   // ignore: no_leading_underscores_for_local_identifiers
@@ -51,7 +53,7 @@ Widget searchList(BuildContext context, AudioPlayer player) {
                           index: index));
                     },
                     child: trackTile(index, todos[index].title.toString(),
-                        todos[index].id, context));
+                        todos[index].id, context, audioQuery));
               });
         } else {
           return Container();

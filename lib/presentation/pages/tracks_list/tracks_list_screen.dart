@@ -40,7 +40,8 @@ Widget tracksScreen(
                             index,
                             state.songList[index].title.toString(),
                             state.songList[index].id,
-                            context));
+                            context,
+                            onAudioQuery));
                   }),
             ),
           ]);

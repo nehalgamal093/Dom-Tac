@@ -10,44 +10,54 @@ import 'package:dom_tac_music_player/presentation/pages/main_page/main_page.dart
 import 'package:dom_tac_music_player/services/get_track_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  Future<bool> requestStoragePermission() async {
+    PermissionStatus storageStatus = await Permission.storage.request();
+    return storageStatus.isGranted;
+  }
 
-  runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => PlayPauseBloc(),
-        ),
-        BlocProvider(
-          create: (context) => SearchTermBloc(),
-        ),
-        BlocProvider(
-          create: (context) => SearchListBloc(
-              songsList: SongsList(),
-              searchTermBloc: BlocProvider.of<SearchTermBloc>(context)),
-        ),
-        BlocProvider(
-          create: (context) =>
-              GetTrackListBloc(songsList: SongsList())..add(TrackListEvent()),
-        ),
-        BlocProvider(
-          create: (context) => SongDetailsBloc(),
-        ),
-        BlocProvider(
-          create: (context) => IsHomeBloc(),
-        ),
-        BlocProvider(
-          create: (context) => GetLastPlayedAudioBloc(),
-        ),
-        BlocProvider(
-          create: (context) => GetLastPlayedPositionBloc(),
-        )
-      ],
-      child: const MyApp(),
-    ),
-  );
+  WidgetsFlutterBinding.ensureInitialized();
+  if (await requestStoragePermission()) {
+    runApp(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => PlayPauseBloc(),
+          ),
+          BlocProvider(
+            create: (context) => SearchTermBloc(),
+          ),
+          BlocProvider(
+            create: (context) => SearchListBloc(
+                songsList: SongsList(),
+                searchTermBloc: BlocProvider.of<SearchTermBloc>(context)),
+          ),
+          BlocProvider(
+            create: (context) =>
+                GetTrackListBloc(songsList: SongsList())..add(TrackListEvent()),
+          ),
+          BlocProvider(
+            create: (context) => SongDetailsBloc(),
+          ),
+          BlocProvider(
+            create: (context) => IsHomeBloc(),
+          ),
+          BlocProvider(
+            create: (context) => GetLastPlayedAudioBloc(),
+          ),
+          BlocProvider(
+            create: (context) => GetLastPlayedPositionBloc(),
+          )
+        ],
+        child: const MyApp(),
+      ),
+    );
+  } else {
+    print('Storage permission denied.');
+    // Handle permission denied case
+  }
 }
 
 class MyApp extends StatelessWidget {
